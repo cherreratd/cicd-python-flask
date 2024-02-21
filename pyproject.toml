@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "cicd-python-flask"
+version = "0.1.0"
+description = ""
+authors = ["cherrera <carlos@tusdatos.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "^3.0.2"
+python-dotenv = "^1.0.1"
+gunicorn = "^21.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
