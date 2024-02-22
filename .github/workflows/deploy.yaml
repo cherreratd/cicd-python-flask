@@ -14,18 +14,11 @@ jobs:
 
       - name: Set up SSH key and whitelist EC2 IP address 🐻‍❄️
         run: |
-         which ssh-agent || (sudo apk update && sudo apk add openssh-client)
-         which rsync || (sudo apk update && sudo apk add rsync)
-         mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
-         chmod 700 ~/.ssh
-         touch ~/.ssh/private.key
-         touch ~/.ssh/known_hosts
-         chmod 600 ~/.ssh/private.key
-         echo -e "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/private.key
-         # Append keyscan output into known hosts
-         ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-         # chmod 644 ~/.ssh/known_hosts
-    
+          mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+  
       - name: Create .env file dynamically 🧨
         env:
           ENV: ${{ secrets.ENV }}
