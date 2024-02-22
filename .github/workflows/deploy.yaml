@@ -16,7 +16,7 @@ jobs:
         run: |
          which ssh-agent || (sudo apk update && sudo apk add openssh-client)
          which rsync || (sudo apk update && sudo apk add rsync)
-         mkdir -p ~/.ssh
+         mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
          chmod 700 ~/.ssh
          touch ~/.ssh/private.key
          touch ~/.ssh/known_hosts
