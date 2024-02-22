@@ -20,7 +20,8 @@ jobs:
           # ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          # ssh-keyscan -H ${{ secrets.EC2_HOST }} > ~/.ssh/known_hosts
+          echo "${{ secrets.EC2_HOST }}"
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} > ~/.ssh/known_hosts -V
 
       - name: Create .env file dynamically 🧨
         env:
