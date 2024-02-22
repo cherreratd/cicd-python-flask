@@ -19,9 +19,9 @@ jobs:
           # chmod 600 ~/.ssh/id_rsa
           # ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           mkdir -p ~/.ssh/
-          echo "$EC2_SSH_KEY" > ../private.key
+          echo "${{ secrets.EC2_SSH_KEY }}" > ../private.key
           sudo chmod 600 ../private.key
-          echo "$EC2_HOST" > ~/.ssh/known_hosts
+          echo ${{ secrets.EC2_HOST }} > ~/.ssh/known_hosts
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
