@@ -24,7 +24,7 @@ jobs:
          echo -e "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/private.key
          # Append keyscan output into known hosts
          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-         chmod 644 ~/.ssh/known_hosts
+         # chmod 644 ~/.ssh/known_hosts
     
       - name: Create .env file dynamically 🧨
         env:
