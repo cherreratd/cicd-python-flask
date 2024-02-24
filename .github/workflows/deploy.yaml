@@ -13,11 +13,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up SSH key and whitelist EC2 IP address 🐻‍❄️
-        run: |
-          mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+        # run: |
+        #  mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
+        #  echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        #  chmod 600 ~/.ssh/id_rsa
+        #  ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
   
       - name: Create .env file dynamically 🧨
         env:
