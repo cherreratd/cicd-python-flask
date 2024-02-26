@@ -40,7 +40,7 @@ After=network.target
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/www/app
-ExecStart=gunicorn --timeout 160 -k gevent --workers 4 --bind unix:myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/guniacces.log --error-logfile /home/ubuntu/guni.log -m 007 main:app
+ExecStart=gunicorn --workers 2 --bind unix:myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/guniacces.log --error-logfile /home/ubuntu/guni.log -m 007 main:app
 
 [Install]
 WantedBy=multi-user.target
