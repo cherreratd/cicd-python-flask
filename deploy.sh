@@ -21,6 +21,36 @@ sudo apt-get install -y python3 python3-pip
 echo "Install application dependencies from requirements.txt"
 sudo pip install -r requirements.txt
 
+# Stop any existing Gunicorn process
+sudo systemctl stop gunicorn
+sudo systemctl disable gunicorn
+
+sudo rm -rf myapp.sock
+
+# Create a new Gunicorn systemd service file
+echo "Creating a new Gunicorn systemd service file"
+sudo bash -c 'cat > /etc/systemd/system/gunicorn.service <<EOF
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/www/app
+ExecStart=gunicorn --timeout 160 -k gevent --workers 4 --bind unix:myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/guniacces.log --error-logfile /home/ubuntu/guni.log -m 007 main:app
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+
+# # Start Gunicorn with the Flask application
+echo "Reloading Gunicorn service"
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
+echo "Gunicorn service reloaded 🚀"
+
+
 # Update and install Nginx if not already installed
 if ! command -v nginx > /dev/null; then
     echo "Installing Nginx"
@@ -49,33 +79,3 @@ else
     echo "Nginx reverse proxy configuration already exists."
 fi
 
-
-# Stop any existing Gunicorn process
-sudo systemctl stop gunicorn
-sudo systemctl disable gunicorn
-
-sudo rm -rf myapp.sock
-
-# Create a new Gunicorn systemd service file
-echo "Creating a new Gunicorn systemd service file"
-sudo bash -c 'cat > /etc/systemd/system/gunicorn.service <<EOF
-[Unit]
-Description=gunicorn daemon
-After=network.target
-
-[Service]
-User=ubuntu
-Group=www-data
-WorkingDirectory=/home/ubuntu/www/app
-ExecStart=gunicorn --timeout 160 -k gevent --workers 4 --bind unix:myapp.sock --capture-output --log-level debug
---access-logfile /home/ubuntu/guniacces.log --error-logfile /home/ubuntu/guni.log -m 007 main:app
-
-[Install]
-WantedBy=multi-user.target
-EOF'
-
-# # Start Gunicorn with the Flask application
-echo "Reloading Gunicorn service"
-sudo systemctl daemon-reload
-sudo systemctl restart gunicorn
-echo "Gunicorn service reloaded 🚀"
