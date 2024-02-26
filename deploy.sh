@@ -1,16 +1,16 @@
 #!/bin/bash
 
 echo "deleting old app"
-sudo rm -rf /var/www/
+sudo rm -rf /home/ubuntu/www/
 
 echo "creating app folder"
-sudo mkdir -p /var/www/app
+sudo mkdir -p /home/ubuntu/www/app
 
 echo "moving files to app folder"
-sudo mv  * /var/www/app
+sudo mv  * /home/ubuntu/www/app
 
 # Navigate to the app directory
-cd /var/www/app/
+cd /home/ubuntu/www/app
 sudo mv env .env
 
 sudo apt-get update
@@ -38,7 +38,7 @@ server {
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/var/www/app/myapp.sock;
+        proxy_pass http://unix:/home/ubuntu/www/app/myapp.sock;
     }
 }
 EOF'
@@ -67,7 +67,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/app
-ExecStart=gunicorn --workers 3 --bind unix:/var/www/app/myapp.sock main:app
+ExecStart=gunicorn --workers 3 --bind unix:/home/ubuntu/www/app/myapp.sock main:app
 
 [Install]
 WantedBy=multi-user.target
