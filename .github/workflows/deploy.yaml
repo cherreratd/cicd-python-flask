@@ -36,7 +36,7 @@ jobs:
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
           ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          scp -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/ -p 7022
+          scp -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/ -P 7022
 
       - name: Run Bash Script To Delpoy App 🚀
         env:
