@@ -56,6 +56,7 @@ sudo systemctl disable gunicorn
 
 sudo rm -rf myapp.sock
 sudo mv app.service /etc/systemd/system/gunicorn.service
+sudo mkdir /var/log/gunicorn
 sudo touch /var/log/gunicorn/access.log
 sudo touch /var/log/gunicorn/error.log
 
