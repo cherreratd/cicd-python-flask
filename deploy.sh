@@ -66,7 +66,7 @@ After=network.target
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/app
+WorkingDirectory=/home/ubuntu/www/app
 ExecStart=gunicorn --workers 3 --bind unix:/home/ubuntu/www/app/myapp.sock main:app
 
 [Install]
