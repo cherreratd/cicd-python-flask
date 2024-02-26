@@ -71,7 +71,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/app
-ExecStart=gunicorn --workers 3 --bind unix:/var/www/app/myapp.sock --capture-output --log-level debug --access-logfile /var/log/gunicorn/access.log --error-logfile /var/log/gunicorn/error.log main:app
+ExecStart=gunicorn --workers 3 --bind unix:/var/www/app/myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/logs/access.log --error-logfile /home/ubuntu/logs/error.log main:app
 
 [Install]
 WantedBy=multi-user.target
