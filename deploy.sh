@@ -55,10 +55,6 @@ sudo systemctl stop gunicorn
 sudo systemctl disable gunicorn
 
 sudo rm -rf myapp.sock
-sudo mv app.service /etc/systemd/system/gunicorn.service
-sudo mkdir /var/log/gunicorn
-sudo touch /var/log/gunicorn/access.log
-sudo touch /var/log/gunicorn/error.log
 
 # Create a new Gunicorn systemd service file
 echo "Creating a new Gunicorn systemd service file"
@@ -71,7 +67,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/app
-ExecStart=gunicorn --workers 3 --bind unix:/var/www/app/myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/logs/access.log --error-logfile /home/ubuntu/logs/error.log main:app
+ExecStart=gunicorn --workers 3 --bind unix:/var/www/app/myapp.sock main:app
 
 [Install]
 WantedBy=multi-user.target
