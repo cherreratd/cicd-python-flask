@@ -66,7 +66,7 @@ if [ ! -f /etc/nginx/sites-available/myapp ]; then
     sudo bash -c 'cat > /etc/nginx/sites-available/myapp <<EOF
 server {
     listen 80;
-    server_name _;
+    server_name 127.0.0.1 localhost;
 
     location / {
         include proxy_params;
