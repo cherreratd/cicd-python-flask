@@ -5,8 +5,8 @@ sudo rm -rf /home/ubuntu/www/
 
 echo "creating app folder"
 sudo mkdir -p /home/ubuntu/www/app
-sudo chown -R ubuntu:www-data /var/www
-sudo chmod -R 750 /var/www
+sudo chown -R ubuntu:www-data /home/ubuntu/www
+sudo chmod -R 750 /home/ubuntu/www
 
 echo "moving files to app folder"
 sudo mv  * /home/ubuntu/www/app
