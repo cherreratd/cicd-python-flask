@@ -49,13 +49,33 @@ else
     echo "Nginx reverse proxy configuration already exists."
 fi
 
+
 # Stop any existing Gunicorn process
-sudo pkill gunicorn
+sudo systemctl stop gunicorn
+sudo systemctl disable gunicorn
+
 sudo rm -rf myapp.sock
+sudo mv app.service /etc/systemd/system/gunicorn.service
+
+# Create a new Gunicorn systemd service file
+echo "Creating a new Gunicorn systemd service file"
+sudo bash -c 'cat > /etc/systemd/system/gunicorn.service <<EOF
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/app
+ExecStart=/usr/bin/gunicorn --workers 3 --bind unix:/var/www/app/myapp.sock --capture-output --log-level debug --access-logfile /var/log/gunicorn/access.log --error-logfile /var/log/gunicorn/error.log main:app
+
+[Install]
+WantedBy=multi-user.target
+EOF'
 
 # # Start Gunicorn with the Flask application
-# # Replace 'server:app' with 'yourfile:app' if your Flask instance is named differently.
-# # gunicorn --workers 3 --bind 0.0.0.0:8000 server:app &
-echo "starting gunicorn"
-sudo gunicorn --workers 3 --bind unix:myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/guniacces.log --error-logfile /home/ubuntu/guni.log -m main:app --user www-data --group www-data --daemon
-echo "started gunicorn 🚀"
+echo "Reloading Gunicorn service"
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
+echo "Gunicorn service reloaded 🚀"
