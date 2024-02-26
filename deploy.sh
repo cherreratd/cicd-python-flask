@@ -64,7 +64,7 @@ Description=gunicorn daemon
 After=network.target
 
 [Service]
-User=www-data
+User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/www/app
 ExecStart=gunicorn --workers 3 --bind unix:/home/ubuntu/www/app/myapp.sock main:app
