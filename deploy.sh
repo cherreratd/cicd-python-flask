@@ -56,6 +56,8 @@ sudo systemctl disable gunicorn
 
 sudo rm -rf myapp.sock
 sudo mv app.service /etc/systemd/system/gunicorn.service
+sudo touch /var/log/gunicorn/access.log
+sudo touch /var/log/gunicorn/error.log
 
 # Create a new Gunicorn systemd service file
 echo "Creating a new Gunicorn systemd service file"
