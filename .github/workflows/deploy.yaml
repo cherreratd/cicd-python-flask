@@ -43,17 +43,8 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
-          # ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
-          ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST << 'EOF'
-          cd /home/ubuntu/www/app
-          if [ -d .git ]; then
-            git pull
-          else
-            git clone git@github.com:cherreratd/cicd-python-flask.git .
-          fi
-          chmod +x ./deploy.sh && ./deploy.sh
-          # Add any additional commands here (e.g., to restart your application)
-          EOF
+          ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
+          
 
       - name: Clean up SSH key 🚀
         if: always()
