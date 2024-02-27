@@ -37,13 +37,17 @@ jobs:
       #  run: |
       #    ssh-keyscan -p 7022 ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
       #    scp -P 7022 -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/
-
-      - name: Run Bash Script To Delpoy App 🚀
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-        run: |
-          ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
+      - name: Copy deployment script to EC2
+        run: scp -o StrictHostKeyChecking=no ./deploy.sh $EC2_USERNAME@$EC2_HOST:/home/ubuntu/
+      - name: Execute deployment script on EC2
+        run: ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST 'chmod +x /home/ubuntu/deploy.sh && /home/ubuntu/deploy.sh'
+      # - name: Run Bash Script To Delpoy App 🚀
+      #  env:
+      #    EC2_HOST: ${{ secrets.EC2_HOST }}
+      #    EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      #  run: ssh -o StrictHostKeyChecking=no ec2-user@your-ec2-public-dns.amazonaws.com '~/path/to/deploy_app.sh'
+        # run: |
+        #  ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
           
 
       - name: Clean up SSH key 🚀
