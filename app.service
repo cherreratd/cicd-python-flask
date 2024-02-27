@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve app
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/var/www/app/
+ExecStart=gunicorn --workers 4 --bind unix:myapp.sock --capture-output --log-level debug --access-logfile /home/ubuntu/guniacces.log --error-logfile /home/ubuntu/guni.log -m 007 main:app
+
+[Install]
+WantedBy=multi-user.target
