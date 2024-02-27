@@ -30,20 +30,30 @@ jobs:
           echo "ENV=${ENV}" >> env
           echo "EC2_USERNAME=${EC2_USERNAME}" >> env
 
-      - name: Copy files to remote server 🚙
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-        run: |
-          ssh-keyscan -p 7022 ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          scp -P 7022 -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/
+      # - name: Copy files to remote server 🚙
+      #  env:
+      #    EC2_HOST: ${{ secrets.EC2_HOST }}
+      #    EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      #  run: |
+      #    ssh-keyscan -p 7022 ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      #    scp -P 7022 -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/
 
       - name: Run Bash Script To Delpoy App 🚀
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
-          ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
+          # ssh -p 7022 -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
+          ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST << 'EOF'
+          cd /home/ubuntu/www/app
+          if [ -d .git ]; then
+            git pull
+          else
+            git clone git@github.com:cherreratd/cicd-python-flask.git .
+          fi
+          chmod +x ./deploy.sh && ./deploy.sh
+          # Add any additional commands here (e.g., to restart your application)
+          EOF
 
       - name: Clean up SSH key 🚀
         if: always()
