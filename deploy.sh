@@ -1,10 +1,13 @@
 #!/bin/bash
 
-echo "deleting old app"
-sudo rm -rf /home/ubuntu/www/
+# Navigate to the application directory (create if it doesn't exist)
+cd /home/ubuntu/www/app || mkdir -p /home/ubuntu/www/app && cd /home/ubuntu/www/app
 
-echo "creating app folder"
-sudo mkdir -p /home/ubuntu/www/app
+echo "deleting old app"
+# sudo rm -rf /home/ubuntu/www/
+
+# echo "creating app folder"
+# sudo mkdir -p /home/ubuntu/www/app
 sudo chown -R ubuntu:www-data /home/ubuntu/www
 sudo chmod -R 750 /home/ubuntu/www
 
@@ -12,13 +15,16 @@ echo "moving files to app folder"
 # sudo mv  * /home/ubuntu/www/app
 
 # Navigate to the app directory
-cd /home/ubuntu/www/app
+# cd /home/ubuntu/www/app
 sudo mv env .env
 
+# Check if the repository is already cloned. If so, pull the latest changes; otherwise, clone the repository.
 if [ -d .git ]; then
+    echo "Repository exists, pulling latest changes..."
     git pull
 else
-   git clone git@github.com:cherreratd/cicd-python-flask.git .
+    echo "Repository not found, cloning..."
+    git clone git@github.com:cherreratd/cicd-python-flask.git .
 fi
 
 sudo apt-get update
