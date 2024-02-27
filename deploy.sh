@@ -9,11 +9,17 @@ sudo chown -R ubuntu:www-data /home/ubuntu/www
 sudo chmod -R 750 /home/ubuntu/www
 
 echo "moving files to app folder"
-sudo mv  * /home/ubuntu/www/app
+# sudo mv  * /home/ubuntu/www/app
 
 # Navigate to the app directory
 cd /home/ubuntu/www/app
 sudo mv env .env
+
+if [ -d .git ]; then
+    git pull
+else
+   git clone git@github.com:cherreratd/cicd-python-flask.git .
+fi
 
 sudo apt-get update
 echo "installing python and pip"
